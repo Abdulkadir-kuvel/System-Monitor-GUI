@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter  import ttk
 from logic.lang import Translator
+from gui.system_display import SystemDisplay
+from logic.theme import THEME
 
 class MainWindow(tk.Tk):
     def __init__(self, lang_code="en"):
@@ -13,14 +15,18 @@ class MainWindow(tk.Tk):
 
         self.title(self.translator.t("title"))
         self.geometry("800x600")
+        self.configure(bg=THEME["bg"])
 
-        self.configure(bg="#777777")
-        label = ttk.Label(self, text=self.translator.t("welcome"), font = "Verdana 12", background="#777777", foreground="white")
+        self.style = ttk.Style(self)
+        self.style.theme_use("default")
+        self.style.configure("TLabel", font=THEME["font"], 
+                             background=THEME["bg"], foreground=THEME["fg"])
+
+
+        label = ttk.Label(self, text=self.translator.t("welcome"), font=THEME["title_font"], background=THEME["bg"], foreground=THEME["fg"])
         label.pack(pady=20)
 
-        start_button = ttk.Button(self, text=self.translator.t("show_data"), command=self.show_data)
-        start_button.pack()
+        self.sys_display = SystemDisplay(self)
+        self.sys_display.pack(pady=10)
 
-    def show_data(self):
-        # Placeholder for the data display logic
-        print("Data display logic goes here.")
+        
